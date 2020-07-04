@@ -4,21 +4,23 @@ import com.crud.tasks.domain.Task;
 import com.crud.tasks.domain.TaskDto;
 import com.crud.tasks.mapper.TaskMapper;
 import com.crud.tasks.service.DbService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 
 @RestController
 @RequestMapping("/v1/task")
 public class TaskController {
-    @Autowired
-    private DbService service;
-    @Autowired
-    private TaskMapper taskMapper;
+
+    private final DbService service;
+    private final TaskMapper taskMapper;
+
+    public TaskController(DbService service, TaskMapper taskMapper) {
+        this.service = service;
+        this.taskMapper = taskMapper;
+    }
 
     @RequestMapping(method = RequestMethod.GET, value = "getTasks")
     List<TaskDto> getTasks() {
@@ -27,12 +29,14 @@ public class TaskController {
 
     @RequestMapping(method = RequestMethod.GET, value = "getTask")
     TaskDto getTask(@RequestParam Long taskId) throws TaskNotFoundException {
-        return taskMapper.mapToTaskDto(service.getTask(taskId).orElseThrow(TaskNotFoundException::new));
+        Task task = service.getTask(taskId).orElseThrow(TaskNotFoundException::new);
+        return taskMapper.mapToTaskDto(task);
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "deleteTask")
-    void deleteTask(@RequestParam Long taskId) throws  TaskNotFoundException{
-        Optional<Task> task = Optional.ofNullable(service.getTask(taskId).orElseThrow(TaskNotFoundException::new));
+    void deleteTask(@RequestParam Long taskId) throws TaskNotFoundException {
+        service.getTask(taskId)
+                .orElseThrow(TaskNotFoundException::new);
         service.deleteTask(taskId);
     }
 
