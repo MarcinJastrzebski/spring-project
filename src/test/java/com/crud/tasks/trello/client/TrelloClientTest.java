@@ -19,7 +19,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(MockitoJUnitRunner.Silent.class)
 public class TrelloClientTest {
 
     @InjectMocks
@@ -32,7 +32,7 @@ public class TrelloClientTest {
     private TrelloConfig trelloConfig;
 
     @Before
-    public void init(){
+    public void init() {
         Mockito.when(trelloConfig.getTrelloApiEndpoint()).thenReturn("http://test.com");
         Mockito.when(trelloConfig.getTrelloAppKey()).thenReturn("test");
         Mockito.when(trelloConfig.getTrelloToken()).thenReturn("test");
@@ -60,7 +60,7 @@ public class TrelloClientTest {
     }
 
     @Test
-    public void shouldCreateCard() throws URISyntaxException{
+    public void shouldCreateCard() throws URISyntaxException {
         //Given
         TrelloCardDto trelloCardDto = new TrelloCardDto(
                 "Test task",
@@ -81,13 +81,24 @@ public class TrelloClientTest {
         CreatedTrelloCard newCard = trelloClient.createCard(trelloCardDto);
 
         //Then
-        Assert.assertEquals("1",newCard.getId());
+        Assert.assertEquals("1", newCard.getId());
         Assert.assertEquals("Test task", newCard.getName());
         Assert.assertEquals("http://test.com", newCard.getShortUrl());
 
-
     }
 
+    @Test
+    public void shouldReturnEmptyList() throws URISyntaxException {
+        //Given
+        TrelloBoardDto[] trelloBoard = new TrelloBoardDto[0];
+        URI uri = new URI("http://test.com/members/usertest/boards?key=test&token=test&fields=name,id&lists=all");
+        Mockito.when(restTemplate.getForObject(uri, null)).thenReturn(trelloBoard);
 
+        //When
+        List<TrelloBoardDto> fetchedNull = trelloClient.getTrelloBoards();
+
+        //Then
+        Assert.assertEquals(0, fetchedNull.size());
+    }
 
 }
