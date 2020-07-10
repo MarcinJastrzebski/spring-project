@@ -1,6 +1,8 @@
 package com.crud.tasks.trello.client;
 
+import com.crud.tasks.domain.CreatedTrelloCard;
 import com.crud.tasks.domain.TrelloBoardDto;
+import com.crud.tasks.domain.TrelloCardDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -34,9 +36,7 @@ public class TrelloClient {
     public List<TrelloBoardDto> getTrelloBoards() {
 
         URI url = buildUri();
-
         TrelloBoardDto[] boardsResponse = restTemplate.getForObject(url, TrelloBoardDto[].class);
-
         Optional<TrelloBoardDto[]> trelloBoardDtos = Optional.ofNullable(boardsResponse);
         if (trelloBoardDtos.isPresent()) {
             return Arrays.asList(boardsResponse);
@@ -44,11 +44,24 @@ public class TrelloClient {
         return new ArrayList<>();
     }
 
+    public CreatedTrelloCard createCard(TrelloCardDto trelloCardDto) {
+
+        URI uri = UriComponentsBuilder.fromHttpUrl(trelloApiEndpoint + "/cards")
+                .queryParam("key", trelloAppKey)
+                .queryParam("token", trelloToken)
+                .queryParam("name", trelloCardDto.getName())
+                .queryParam("desc", trelloCardDto.getDescription())
+                .queryParam("pos", trelloCardDto.getPos())
+                .queryParam("idList", trelloCardDto.getListId()).build().encode().toUri();
+        return restTemplate.postForObject(uri, null, CreatedTrelloCard.class);
+    }
+
     private URI buildUri() {
-        return UriComponentsBuilder.fromHttpUrl(trelloApiEndpoint + "/boards/" + trelloUsername + "/lists")
-                    .queryParam("key", trelloAppKey)
-                    .queryParam("token", trelloToken)
-                    .queryParam("fields", "name,id").build().encode().toUri();
+        return UriComponentsBuilder.fromHttpUrl(trelloApiEndpoint + "/members/" + trelloUsername + "/boards")
+                .queryParam("key", trelloAppKey)
+                .queryParam("token", trelloToken)
+                .queryParam("fields", "name,id")
+                .queryParam("lists", "all").build().encode().toUri();
     }
 
 }
