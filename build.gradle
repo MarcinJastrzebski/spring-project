@@ -29,6 +29,8 @@ dependencies {
 
 	//providedRuntime ("org.springframework.boot:spring-boot-starter-tomcat")
 
+	//jrebel
+
 	implementation 'io.springfox:springfox-swagger2:2.7.0'
 	implementation 'io.springfox:springfox-swagger-ui:2.7.0'
 }
