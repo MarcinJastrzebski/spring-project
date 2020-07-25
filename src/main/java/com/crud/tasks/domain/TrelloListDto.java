@@ -13,9 +13,9 @@ import lombok.NoArgsConstructor;
 public class TrelloListDto {
 
     @JsonProperty("id")
-    private String name;
-    @JsonProperty("name")
     private String id;
+    @JsonProperty("name")
+    private String name;
     @JsonProperty("closed")
     private boolean isClosed;
 
