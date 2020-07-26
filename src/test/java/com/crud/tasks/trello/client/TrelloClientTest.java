@@ -71,8 +71,8 @@ public class TrelloClientTest {
         URI uri = new URI("http://test.com/cards?key=test&token=test&name=Test%20task&desc=Test%20Description&pos=top&idList=test_id");
 
         CreatedTrelloCardDto createdTrelloCard = new CreatedTrelloCardDto(
-                "Test task",
                 "1",
+                "Test task",
                 "http://test.com");
 
         Mockito.when(restTemplate.postForObject(uri, null, CreatedTrelloCardDto.class)).thenReturn(createdTrelloCard);
