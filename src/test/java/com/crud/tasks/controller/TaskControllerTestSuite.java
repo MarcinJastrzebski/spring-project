@@ -43,7 +43,7 @@ public class TaskControllerTestSuite {
     private TaskMapper taskMapper;
 
     @Test
-    public void shouldFetchEmptyTaskList() throws Exception{
+    public void shouldFetchEmptyTaskList() throws Exception {
         //Given
         List<Task> taskList = new ArrayList<>();
         List<TaskDto> taskDtoList = new ArrayList<>();
@@ -51,14 +51,14 @@ public class TaskControllerTestSuite {
         Mockito.when(taskMapper.mapToTaskDtoList(taskList)).thenReturn(taskDtoList);
         //When & Then
         mockMvc.perform(get("/v1/task/getTasks")
-        .contentType(MediaType.APPLICATION_JSON))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$",hasSize(0)));
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(0)));
     }
 
 
     @Test
-    public void shouldFetchTaskList() throws Exception{
+    public void shouldFetchTaskList() throws Exception {
         //Given
         List<Task> taskList = new ArrayList<>();
         taskList.add(new Task(1L, "test task", "test desc"));
@@ -74,9 +74,9 @@ public class TaskControllerTestSuite {
     }
 
     @Test
-    public void shouldFetchTask() throws Exception{
+    public void shouldFetchTask() throws Exception {
         //Given
-        Task task = new Task(1L,"test task", "test desc");
+        Task task = new Task(1L, "test task", "test desc");
 
         TaskDto taskDto = new TaskDto(1L, "test task", "test desc");
 
@@ -92,9 +92,9 @@ public class TaskControllerTestSuite {
     }
 
     @Test
-    public void shouldCreateTask() throws Exception{
+    public void shouldCreateTask() throws Exception {
         //Given
-        Task task = new Task(1l,"test task", "test desc");
+        Task task = new Task(1l, "test task", "test desc");
         TaskDto taskDto = new TaskDto(1L, "task", "desc");
         when(dbService.saveTask(ArgumentMatchers.any(Task.class))).thenReturn(task);
         when(taskMapper.mapToTask(taskDto)).thenReturn(task);
@@ -110,9 +110,9 @@ public class TaskControllerTestSuite {
     }
 
     @Test
-    public void shouldUpdateTask() throws Exception{
+    public void shouldUpdateTask() throws Exception {
         //Given
-        Task task = new Task(1l,"test task", "test desc");
+        Task task = new Task(1l, "test task", "test desc");
         TaskDto taskDto = new TaskDto(1L, "update test task", "update test desc");
         when(taskMapper.mapToTaskDto(task)).thenReturn(taskDto);
         when(dbService.saveTask(ArgumentMatchers.any(Task.class))).thenReturn(task);
@@ -130,9 +130,9 @@ public class TaskControllerTestSuite {
     }
 
     @Test
-    public void shouldDeleteTask() throws Exception{
+    public void shouldDeleteTask() throws Exception {
         //Given
-        Task task = new Task(1l,"test task", "test desc");
+        Task task = new Task(1l, "test task", "test desc");
         when(dbService.getTask(1L)).thenReturn(Optional.of(task));
         //When & Then
         this.mockMvc.perform(MockMvcRequestBuilders
