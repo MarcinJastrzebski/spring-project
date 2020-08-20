@@ -27,9 +27,9 @@ public class MailCreatorService {
 
         Context context = new Context();
         context.setVariable("message", message);
-//        context.setVariable("tasks_url","https://zxkuba.github.io/");
-//        context.setVariable("button", "Visit website");
-//        context.setVariable("admin_name", adminConfig.getAdminName());
+        context.setVariable("tasks_url","http://localhost:8888/tasks_frontend2/"); //MAMP
+        context.setVariable("button", "Visit website");
+        context.setVariable("admin_name", adminConfig.getAdminName());
 //        context.setVariable("goodbye", "https://giphy.com/gifs/fxe8v45NNXFd4jdaNI/html5");
 //        context.setVariable("company", "${info.company.name}");
 //        context.setVariable("show_button", false);
