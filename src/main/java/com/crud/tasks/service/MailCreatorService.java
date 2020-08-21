@@ -39,7 +39,7 @@ public class MailCreatorService {
         context.setVariable("admin_name", adminConfig.getAdminName());
         context.setVariable("goodbye", "Goodbye :)");
         context.setVariable("company", companyConfig.getCompanyName());
-        context.setVariable("show_button", true);
+        context.setVariable("show_button", false);
         context.setVariable("is_friend", true);
         context.setVariable("admin_config", adminConfig);
         context.setVariable("application_functionality", functionality);
